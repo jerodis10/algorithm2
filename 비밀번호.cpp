@@ -1,35 +1,26 @@
-#include <stdio.h>
-#include <stack>
-using namespace std;
+#include <iostream>
 
 int main(void) {
-	for (int tcase = 1; tcase < 2; tcase++) {
-		int n, tmp;
-		stack<int> s, t;
-		scanf_s("%d", &n);
-		scanf_s("%1d", &tmp);
-		//printf("a:%d ", tmp);
-		s.push(tmp);
-		//printf("%d", s.size());
-		for (int i = 1; i < n; i++) {
-			scanf_s("%1d", &tmp);
-			//printf("b:%d ", tmp);
-			if (!s.empty() && s.top() == tmp) {
-				s.pop();
+	for (int testCase = 1; testCase <= 10; testCase++) 
+	{
+		int a; 
+		scanf("%d\n", &a);
+		int sum = 0;
+		for (int i = 0; i < a; i++)
+		{
+			if (i % 2 == 0)
+			{
+				int n = 0;
+				scanf("%d", &n);
+				sum += n;
 			}
-			else {
-				s.push(tmp);
+			else
+			{
+				char n = 0;
+				scanf("%c", &n);
 			}
 		}
-		while (!s.empty()) {
-			t.push(s.top());
-			s.pop();
-		}
-		printf("#%d ", tcase);
-		while (!t.empty()) {
-			printf("%d", t.top());
-			t.pop();
-		}puts("");
+		printf("#%d %d\n", testCase, sum);
 	}
 	return 0;
 }
