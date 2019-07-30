@@ -3,7 +3,7 @@
 using namespace std;
 
 int main(void) {
-	for (int tcase = 1; tcase < 2; tcase++) {
+	for (int tcase = 1; tcase < 10; tcase++) {
 		int n, tmp;
 		stack<int> s, t;
 		scanf_s("%d", &n);
