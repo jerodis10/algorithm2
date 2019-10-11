@@ -38,7 +38,7 @@ public class Solution {
     }
  
     private static void find(int index, int depth, int result) {
-        if(min<=result) {    //¿©±â ½Ã°£ ÁÙÀÌ±â¿¡ Á¦ÀÏ Áß¿ä
+        if(min<=result) {    //ì—¬ê¸° ì‹œê°„ ì¤„ì´ê¸°ì— ì œì¼ ì¤‘ìš”
             return;
         }
         if (depth == customer) {
