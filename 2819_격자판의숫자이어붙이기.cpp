@@ -44,6 +44,6 @@ int main() {
 
 		cout << "#" << tc << " " << ret.size() << endl;
 	}
-	 
+
 	return 0;
 }
