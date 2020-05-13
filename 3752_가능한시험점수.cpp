@@ -1,44 +1,52 @@
 #include<iostream>
-#include<set>
+#include<vector>
 using namespace std;
 
-int num[100];
-int num2[100];
-int N;
-set<int> ret;
+int testCase, n;
+int num[101];
+bool visited[10001];
 
-void dfs(int depth, int index) {
-	if (depth > N) {
-		int sum = 0;
-		for (int i = 0; i < N; i++) {
-			if(num2[depth] == 1)
-				sum += num[i];
-		}
-		ret.insert(sum);
-		return;
-	}
-	if (index == 0) {
-		num2[depth] = 0;
-	}
-	for (int i = 0; i < 2; i++) {
-		dfs(depth + 1, i);
-	}
+vector<int> v;
+
+void mem_set(void* dest, int val, int size) {
+	unsigned char* p = (unsigned char*)dest;
+	while (size--) *p++ = val;
 }
 
-int main() {
-	int T;
-	cin >> T >> N;
-	for (int tc = 1; tc <= T; tc++) {
-		ret.clear();
-		for (int i = 0; i < N; i++) {
-			cin >> num[i];
-			num2[i] = 1;
+int solve() {
+	v.push_back(0);
+	visited[0] = true;
+
+	for (int i = 0; i <= n; i++) {
+		int len = (int)v.size() - 1;
+
+		for (int j = len; j >= 0; j--) {
+			int now = v[j];
+			int next = now + num[i];
+
+			if (!visited[next]) {
+				v.push_back(next);
+				visited[next] = true;
+			}
 		}
-		for (int i = 0; i < 2; i++) {
-			dfs(0, i);
+	}
+
+	return (int)v.size();
+}
+
+
+int main() {
+	cin >> testCase;
+	for (int tc = 1; tc <= testCase; tc++) {
+		cin >> n;
+		for (int i = 1; i <= n; i++) {
+			cin >> num[i];
 		}
 
-		cout << "#" << tc << " " << ret.size() << endl;
+		mem_set(visited, false, sizeof(visited));
+		v.clear();
+
+		cout << "#" << testCase << " " << solve() << endl;
 	}
 
 	return 0;
