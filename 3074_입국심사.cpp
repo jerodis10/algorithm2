@@ -28,7 +28,7 @@ int main() {
 
         while (left <= right) {
             sum = 0;
-            mid = (left + right) / 2;
+            mid = (left + right) / 2; 
             for (int i = 0; i < n; i++) sum = sum + (mid / counter[i]);
 
             if (sum < m) left = mid + 1;
