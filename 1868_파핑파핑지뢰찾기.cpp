@@ -1,81 +1,82 @@
-#include<iostream>
-#include<string>
+#include <iostream>
 using namespace std;
 
-int n;
-int ret = 0;
-string map[300];
-int visited[300][300];
-int dy[8] = { 0,-1,-1,-1,0,1,1,1 };
-int dx[8] = { -1,-1,0,1,1,1,0,-1 };
+int t, n, res;
+int map[302][302];
+bool visited[302][302];
+int dx[] = { 1,1,-1,-1,0,1,0,-1 };
+int dy[] = { 1,-1,1,-1,1,0,-1,0 };
 
-void mem_set(void* dest, int val, int size) {
-	unsigned char* p = (unsigned char*)dest;
-	while (size--) *p++ = val;
+void numbering(int x, int y) {
+    for (int i = 0; i < 8; i++) {
+        int ax = x + dx[i];
+        int ay = y + dy[i];
+        if (ax > 0 && ay > 0 && ax <= n && ay <= n && map[ax][ay] != '*') {
+            map[ax][ay]++;
+        }
+    }
 }
 
-void solve(int y, int x) {
-	if (visited[y][x] == 0) return;
-	visited[y][x] = 1;
-	for (int i = 0; i < 8; i++) {
-		int cnt = 0;
-		int ny = y + dy[i];
-		int nx = x + dx[i];
-		if (ny < 0 || ny >= 300 || nx < 0 || nx >= 300) continue;
-		if (map[ny][nx] == '*') return; 
-		else if(map[ny][nx] == '.'){
-			map[y][x] = '0';
-			solve(ny, nx);
-		}
-	}
-}
-
-void start(int y, int x) {
-	if (map[y][x] == '*') return;
-	int start_y, start_x, ny, nx;
-	for (int i = 0; i < 8; i++) {
-		ny = y + dy[i];
-		nx = x + dx[i];
-
-		if (ny < 0 || ny >= 300 || nx < 0 || nx >= 300) continue;
-		if (map[ny][nx] == '*') return;
-	}
-	//start_y = ny;
-	//start_x = nx;
-
-	solve(y, x);
-	ret++;
+void dfs(int x, int y, bool flag) {
+    visited[x][y] = true;
+    if (!flag) return;
+    for (int i = 0; i < 8; i++) {
+        int ax = x + dx[i];
+        int ay = y + dy[i];
+        if (ax > 0 && ay > 0 && ax <= n && ay <= n) {
+            if (map[ax][ay] == '*') continue;
+            if (!visited[ax][ay]) {
+                if (map[ax][ay] == 0) {
+                    dfs(ax, ay, true);
+                }
+                else {
+                    dfs(ax, ay, false);
+                }
+            }
+        }
+    }
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
 
-	int tc;
-	cin >> tc;
-	for (int t = 1; t <= tc; t++) {
-		ret = 0;
-		mem_set(visited, 0, sizeof(visited));
-		cin >> n;
-		for (int i = 0; i < n; i++) {
-			cin >> map[i];
-		}
+    cin >> t;
+    for (int tc = 1; tc <= t; tc++) {
+        cin >> n;
+        res = 0;
+        char buf[301];
+        for (int i = 1; i <= n; i++) {
+            cin >> buf;
+            for (int j = 1; j <= n; j++) {
+                map[i][j] = buf[j - 1];
+                if (map[i][j] == '.') map[i][j] = 0;
+                visited[i][j] = false;
+            }
+        }
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				start(i, j);
-			}
-		}
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (map[i][j] == '*') numbering(i, j);
+            }
+        }
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (map[i][j] == '.') ret++;
-			}
-		}
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (!visited[i][j] && map[i][j] == 0) {
+                    dfs(i, j, true);
+                    res++;
+                }
+            }
+        }
 
-		cout << "#" << t << " " << ret << endl;
-	}
-
-	return 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (map[i][j] == '*') continue;
+                if (!visited[i][j]) res++;
+            }
+        }
+        cout << "#" << tc << " " << res << endl;
+    }
 }
