@@ -4,8 +4,8 @@ using namespace std;
 
 int t, ret;
 int n, b;
-int num[20];
-bool visited[20];
+int num[21];
+bool visited[21];
 vector<int> v;
 
 void dfs(int index, int cnt) {
@@ -15,8 +15,7 @@ void dfs(int index, int cnt) {
 	for (int i = 0; i < cnt; i++) {
 		sum += v[i];
 	}
-	if (b > sum && cnt != 0) return;
-	if (ret > sum) ret = sum;
+	if (ret > sum && b <= sum) ret = sum;
 
 	for (int i = index; i < n; i++) {
 		if (visited[i] == true) continue;
