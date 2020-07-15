@@ -1,13 +1,14 @@
 #include<iostream>
-#include<vector>
+#include<set>
 using namespace std;
 
 int t, ret;
-int n, num;
+int n, num, max_num;
 int map[100][100];
 bool visited[100][100];
 int dy[] = { 0,-1,0,1 };
 int dx[] = { -1,0,1,0 };
+set<int> s;
 
 void mem_set(void* dest, int val, int size) {
 	unsigned char* p = (unsigned char*)dest;
@@ -15,12 +16,12 @@ void mem_set(void* dest, int val, int size) {
 }
 
 void count(int y, int x) {
-	if (visited[y][x] == true) return;
+	if (visited[y][x] == true || map[y][x] == 0) return;
 	visited[y][x] = true;
 
 	for (int k = 0; k < 4; k++) {
 		int ny = y + dy[k];
-		int nx = x + dy[k];
+		int nx = x + dx[k];
 		if (ny >= 0 && ny < n && nx >= 0 && nx < n) {
 			count(ny, nx);
 		}
@@ -28,8 +29,6 @@ void count(int y, int x) {
 }
 
 void dfs(int cnt) {
-	if (cnt > n) return;
-
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			if (map[i][j] == cnt) {
@@ -60,14 +59,20 @@ int main() {
 	int tc;
 	cin >> tc;
 	for (int testCase = 1; testCase <= tc; testCase++) {
-		ret = 0;
-		mem_set(visited, false, sizeof(visited));
+		ret = 1;
+		max_num = 0;
 		cin >> n;
 		for (int i = 0; i < n; i++)
-			for (int j = 0; j < n; j++)
+			for (int j = 0; j < n; j++) {
 				cin >> map[i][j];
+				s.insert(map[i][j]);
+			}
 
-		dfs(1);
+		set<int>::iterator iter;
+		for (iter = s.begin(); iter != s.end(); iter++) {
+			mem_set(visited, false, sizeof(visited));
+			dfs(*iter);
+		}
 
 		cout << "#" << testCase << " " << ret << endl;
 	}
